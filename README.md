@@ -1,3 +1,3 @@
 # Estudio IA
 
-Ecosistema multi-agente.
+Ecosistema multi-agente enfocado en automatización.
