@@ -1,0 +1,37 @@
+name: Repo Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  repo-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f README.md
+          test -f CHANGELOG.md
+          test -f .gitignore
+          test -f templates/arc/arc-master.md
+          test -f docs/decisiones_plataforma.md
+          test -f docs/estado_validacion_dify.md
+          test -d prompts/design-phase
+          test -d prompts/builder-phase
+          test -d dify
+          test -d n8n
+          test -d infra
+
+      - name: Check no obvious env secrets committed
+        run: |
+          if find . -name ".env" -o -name ".env.local" | grep -q .; then
+            echo "ERROR: .env file detected"
+            exit 1
+          fi
