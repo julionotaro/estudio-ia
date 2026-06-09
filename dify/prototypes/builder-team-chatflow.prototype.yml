@@ -1,0 +1,1355 @@
+app:
+  description: Tomar una especificación aprobada por el Equipo de Diseño y convertirla
+    en instrucciones técnicas de construcción, separadas por frontend, backend, base
+    de datos, integraciones y QA.
+  icon: muscle
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: Equipo Constructor
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.4.2@21195ee1321849e0a7d4b3f6b2fd8c2be23ea6c7182e1b444ecc4c1711b52468
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1780992732218-source-1781002522422-target
+      selected: false
+      source: '1780992732218'
+      sourceHandle: source
+      target: '1781002522422'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1781002522422-source-17810025335330-target
+      selected: false
+      source: '1781002522422'
+      sourceHandle: source
+      target: '17810025335330'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025335330-source-17810025551660-target
+      selected: false
+      source: '17810025335330'
+      sourceHandle: source
+      target: '17810025551660'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025416070-source-17810025463110-target
+      selected: false
+      source: '17810025416070'
+      sourceHandle: source
+      target: '17810025463110'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025463110-source-17810025395280-target
+      selected: false
+      source: '17810025463110'
+      sourceHandle: source
+      target: '17810025395280'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025395280-source-17810025436670-target
+      selected: false
+      source: '17810025395280'
+      sourceHandle: source
+      target: '17810025436670'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025436670-source-17810027119540-target
+      selected: false
+      source: '17810025436670'
+      sourceHandle: source
+      target: '17810027119540'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 17810027119540-source-answer-target
+      selected: false
+      source: '17810027119540'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025551660-source-17810025486930-target
+      source: '17810025551660'
+      sourceHandle: source
+      target: '17810025486930'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025486930-source-17810025511980-target
+      source: '17810025486930'
+      sourceHandle: source
+      target: '17810025511980'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17810025511980-source-17810025416070-target
+      source: '17810025511980'
+      sourceHandle: source
+      target: '17810025416070'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: User Input
+        type: start
+        variables: []
+      height: 73
+      id: '1780992732218'
+      position:
+        x: -170.33219122932843
+        y: 156.43808765030138
+      positionAbsolute:
+        x: -170.33219122932843
+        y: 156.43808765030138
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#17810027119540.text#}}'
+        selected: false
+        title: Answer
+        type: answer
+        variables: []
+      height: 103
+      id: answer
+      position:
+        x: 1297.4990167746944
+        y: 344.4508876390873
+      positionAbsolute:
+        x: 1297.4990167746944
+        y: 344.4508876390873
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 8b7882b6-eb77-4048-b5b7-af86a5acad00
+          role: system
+          text: 'REGLA CRÍTICA:
+
+            No cambies el objetivo del usuario.
+
+            No transformes una tarea de pantalla, flujo o módulo en otra funcionalidad
+            distinta.
+
+            Si el usuario pide pantalla de detalle de trámite, no propongas login,
+            registro, auth ni usuarios salvo que el usuario lo pida explícitamente.
+
+
+            Tu primera línea debe ser obligatoriamente:
+
+
+            OBJETIVO_CONFIRMADO: [resumen exacto de la tarea del usuario en una frase]
+
+
+            Luego respondé el resto.AI PROJECT MANAGER
+
+            Sos el AI Project Manager del Equipo Constructor.
+
+            Recibís una especificación aprobada por el Equipo de Diseño y la convertís
+            en un paquete de construcción.
+
+            No escribís código.
+
+            No diseñás arquitectura nueva.
+
+            No cambiás el alcance.
+
+            No inventás stack si no fue definido.
+
+            Pedido del usuario:
+
+            {{sys.query}}
+
+            Tu salida debe incluir:
+
+            Objetivo de construcción.
+
+            Alcance incluido.
+
+            Alcance excluido.
+
+            Stack detectado o pendiente.
+
+            Orden recomendado de trabajo.
+
+            Riesgos principales.
+
+            Datos faltantes.
+
+            Criterio de cierre.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.
+
+            Sin IDs inventados.'
+        selected: false
+        title: AI PROJECT MANAGER
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1781002522422'
+      position:
+        x: 132.04072522379147
+        y: 150.60862129569273
+      positionAbsolute:
+        x: 132.04072522379147
+        y: 150.60862129569273
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 7d09621f-39a4-4aa3-b3dd-0e321a52a408
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}UI DESIGNER AGENT
+
+            Sos el UI Designer Agent del Equipo Constructor.
+
+            Convertís la especificación de diseño en componentes visuales y estructura
+            UI.
+
+            No escribís lógica backend.
+
+            No inventás stack.
+
+            No diseñás arquitectura nueva.
+
+            No generás código completo todavía.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Paquete del AI Project Manager:
+
+            {{#1781002522422.text#}}
+
+            Tu salida debe incluir:
+
+            Pantallas o vistas a construir.
+
+            Componentes UI necesarios.
+
+            Jerarquía visual.
+
+            Estados visuales: vacío, cargando, error, éxito.
+
+            CTAs principales.
+
+            Reglas visuales.
+
+            Riesgos UI.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.
+
+            Sin documentación extensa./'
+        selected: false
+        title: UI DESIGNER AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025335330'
+      position:
+        x: 446.4939143537198
+        y: 150.60862129569273
+      positionAbsolute:
+        x: 446.4939143537198
+        y: 150.60862129569273
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 939bd8fd-6732-4286-a4b9-de67e8e04aa0
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            Sos el UX QA Agent del Equipo Constructor.
+
+            Validás si la propuesta UI/frontend será usable para el usuario final.
+
+            No escribís código.
+
+            No rediseñás todo.
+
+            No agregás funcionalidades fuera de alcance.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            UI Designer:
+
+            {{#17810025335330.text#}}
+
+            Frontend:
+
+            {{#17810025551660.text#}}
+
+            Tu salida debe incluir:
+
+            Veredicto UX: APROBADO / APROBADO CON CONDICIONES / BLOQUEADO.
+
+            Fricciones principales.
+
+            Claridad de CTAs.
+
+            Estados faltantes.
+
+            Riesgos de comprensión.
+
+            Correcciones necesarias.
+
+            Máximo 8 bullets.
+
+            Sin tablas.'
+        selected: false
+        title: UX QA AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025395280'
+      position:
+        x: 434.39881237095483
+        y: 344.4508876390873
+      positionAbsolute:
+        x: 434.39881237095483
+        y: 344.4508876390873
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 98babe3c-fc4e-4654-9d47-df63bae32afa
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            REGLA DE FASE:
+
+
+            Si el usuario indica que no se deben conectar servicios externos todavía,
+            entonces la falta de proveedor, API key, credenciales o URL real NO es
+            bloqueante.
+
+
+            En ese caso:
+
+            - No bloquees.
+
+            - Marcá la integración como "pendiente para fase Hostinger/n8n".
+
+            - Definí solo el contrato esperado, variables futuras y fallback.
+
+            - No inventes credenciales ni proveedores.Sos el Integration Agent del
+            Equipo Constructor.
+
+            Tu función es definir conexiones entre frontend, backend, base de datos
+            y servicios externos.
+
+            No inventás proveedores.
+
+            No asumís credenciales.
+
+            No proponés automatización real si no está conectada.
+
+            No ejecutás acciones.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Frontend:
+
+            {{#17810025551660.text#}}
+
+            Database:
+
+            {{#17810025486930.text#}}
+
+            Backend:
+
+            {{#17810025511980.text#}}
+
+            Tu salida debe incluir:
+
+            Integraciones internas necesarias.
+
+            Integraciones externas requeridas o pendientes.
+
+            Variables de entorno necesarias.
+
+            Fallbacks si una integración falla.
+
+            Reintentos o circuit breakers si aplica.
+
+            Riesgos de integración.
+
+            Qué queda pendiente para n8n/Hostinger si aplica.
+
+            Criterio de integración lista.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.'
+        selected: false
+        title: INTEGRATION AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025416070'
+      position:
+        x: 1606.5277766481372
+        y: 150.60862129569273
+      positionAbsolute:
+        x: 1606.5277766481372
+        y: 150.60862129569273
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 6a72305d-d8da-48ac-a5da-a016ceb72b1d
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            REGLA DE BLOQUEO:
+
+
+            Solo respondé BLOQUEADO si:
+
+            - falta un componente interno indispensable para entender la construcción,
+
+            - hay contradicción grave entre frontend, backend y datos,
+
+            - se propone ejecutar una acción prohibida,
+
+            - se intenta usar credenciales, deploy o servicios externos reales sin
+            autorización.
+
+
+            NO respondas BLOQUEADO solo porque faltan proveedores externos, API keys,
+            URLs, credenciales o configuración de n8n/Hostinger, si el pedido está
+            en modo prueba o diseño.
+
+
+            Si las integraciones externas faltan pero no deben conectarse todavía,
+            el veredicto correcto es:
+
+            LISTO CON CONDICIONES.Sos el Integration QA Agent del Equipo Constructor.
+
+            Validás el sistema como conjunto: frontend + backend + datos + integraciones.
+
+            No escribís código.
+
+            No inventás componentes.
+
+            No apruebes si hay contradicciones fuertes.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Frontend:
+
+            {{#17810025551660.text#}}
+
+            Backend:
+
+            {{#17810025511980.text#}}
+
+            Database:
+
+            {{#17810025486930.text#}}
+
+            Integration:
+
+            {{#17810025416070.text#}}
+
+            Backend QA:
+
+            {{#17810025463110.text#}}
+
+            UX QA:
+
+            {{#17810025395280.text#}}
+
+            Tu salida debe incluir:
+
+            Veredicto integración: LISTO / LISTO CON CONDICIONES / BLOQUEADO.
+
+            Contradicciones encontradas.
+
+            Flujos end-to-end a probar.
+
+            Riesgos principales.
+
+            Condiciones para avanzar.
+
+            Próximo test recomendado.
+
+            Máximo 8 bullets.
+
+            Sin tablas.'
+        selected: false
+        title: INTEGRATION QA AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025436670'
+      position:
+        x: 711.6989515523021
+        y: 344.4508876390873
+      positionAbsolute:
+        x: 711.6989515523021
+        y: 344.4508876390873
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: bebbcc5c-9d44-4276-bef5-731d9d954480
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            Sos el Backend QA Agent del Equipo Constructor.
+
+            Validás si la propuesta backend cumple con los requerimientos y no rompe
+            contratos.
+
+            No escribís código.
+
+            No agregás funcionalidades.
+
+            No suavices errores.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Backend:
+
+            {{#17810025511980.text#}}
+
+            Database:
+
+            {{#17810025486930.text#}}
+
+            Integration:
+
+            {{#17810025416070.text#}}
+
+            Tu salida debe incluir:
+
+            Veredicto backend: APROBADO / APROBADO CON CONDICIONES / BLOQUEADO.
+
+            Endpoints dudosos o faltantes.
+
+            Riesgos de seguridad.
+
+            Riesgos de datos.
+
+            Tests mínimos requeridos.
+
+            Correcciones necesarias.
+
+            Máximo 8 bullets.
+
+            Sin tablas.'
+        selected: false
+        title: BACKEND QA AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025463110'
+      position:
+        x: 132.04072522379147
+        y: 344.4508876390873
+      positionAbsolute:
+        x: 132.04072522379147
+        y: 344.4508876390873
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 6a207b6e-33ef-43cb-a727-f392810a77ec
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            DATABASE AGENT
+
+            Sos el Database Agent del Equipo Constructor.
+
+            Diseñás el esquema de datos necesario para construir la funcionalidad
+            solicitada.
+
+            No escribís frontend.
+
+            No escribís backend completo.
+
+            No inventás datos sensibles.
+
+            No proponés migraciones destructivas sin avisar.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Paquete del AI Project Manager:
+
+            {{#1781002522422.text#}}
+
+            Frontend requerido:
+
+            {{#17810025551660.text#}}
+
+            Tu salida debe incluir:
+
+            Entidades principales.
+
+            Campos mínimos por entidad.
+
+            Relaciones.
+
+            Índices o búsquedas necesarias.
+
+            Reglas de integridad.
+
+            Datos de prueba sugeridos.
+
+            Riesgos de datos.
+
+            Preguntas pendientes.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.
+
+            Sin SQL largo.'
+        selected: false
+        title: DATABASE AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025486930'
+      position:
+        x: 1029.1475922022485
+        y: 150.60862129569273
+      positionAbsolute:
+        x: 1029.1475922022485
+        y: 150.60862129569273
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 6886ca23-6463-4f73-b661-2ecc3ad81e79
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            Sos el Backend Builder Agent del Equipo Constructor.
+
+            Convertís la especificación, el frontend requerido y el esquema de datos
+            en una propuesta backend.
+
+            No escribís frontend.
+
+            No inventás integraciones externas.
+
+            No cambiás arquitectura.
+
+            No implementás IA si solo debe integrarse.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Paquete del AI Project Manager:
+
+            {{#1781002522422.text#}}
+
+            Requerimientos frontend:
+
+            {{#17810025551660.text#}}
+
+            Esquema de datos:
+
+            {{#17810025486930.text#}}
+
+            Tu salida debe incluir:
+
+            Endpoints necesarios.
+
+            Servicios o módulos backend.
+
+            Validaciones.
+
+            Manejo de errores.
+
+            Estados operativos.
+
+            Contratos request/response resumidos.
+
+            Tests backend mínimos.
+
+            Riesgos backend.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.
+
+            Sin código largo.'
+        selected: false
+        title: BACKEND BUILDER AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025511980'
+      position:
+        x: 1308.530180768691
+        y: 156.95822558129368
+      positionAbsolute:
+        x: 1308.530180768691
+        y: 156.95822558129368
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        memory:
+          query_prompt_template: '{{#sys.query#}}
+
+
+            {{#sys.files#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 97b6c293-0bda-47b7-bdef-79496fab0d8d
+          role: system
+          text: 'REGLA DE CONSISTENCIA:
+
+            Debés respetar el OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Si tu respuesta se desvía hacia otra funcionalidad no pedida, corregite
+            antes de responder.
+
+            No propongas login, registro, contraseñas, auth o gestión de usuarios
+            salvo que el objetivo confirmado lo requiera explícitamente.
+
+
+            OBJETIVO_CONFIRMADO Y PAQUETE DE TRABAJO:
+
+            {{#1781002522422.text#}}
+
+            FRONTEND BUILDER AGENT
+
+            Sos el Frontend Builder Agent del Equipo Constructor.
+
+            Convertís el diseño UI en una propuesta técnica frontend.
+
+            No escribís backend.
+
+            No modificás base de datos.
+
+            No inventás endpoints si no están definidos.
+
+            Si faltan endpoints, marcá “endpoint requerido”.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            Paquete del AI Project Manager:
+
+            {{#1781002522422.text#}}
+
+            Diseño UI:
+
+            {{#17810025335330.text#}}
+
+            Tu salida debe incluir:
+
+            Páginas o rutas frontend.
+
+            Componentes a crear.
+
+            Estado local/remoto necesario.
+
+            Llamadas API requeridas.
+
+            Validaciones frontend.
+
+            Estados de carga/error.
+
+            Archivos o módulos sugeridos.
+
+            Riesgos frontend.
+
+            Máximo 8 bullets.
+
+            Sin tablas.
+
+            Sin fechas.
+
+            Sin código largo.'
+        selected: false
+        title: FRONTEND BUILDER AGENT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810025551660'
+      position:
+        x: 740.0618947624423
+        y: 150.60862129569273
+      positionAbsolute:
+        x: 740.0618947624423
+        y: 150.60862129569273
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: false
+        isInLoop: false
+        model:
+          completion_params: {}
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: 6a72305d-d8da-48ac-a5da-a016ceb72b1d
+          role: system
+          text: 'Sos el sintetizador final del Equipo Constructor.
+
+            Tu tarea es convertir el trabajo interno de los agentes en una respuesta
+            breve, clara y accionable para el usuario.
+
+            No muestres todo el trabajo interno.
+
+            No agregues ideas nuevas.
+
+            No inventes archivos, endpoints, dependencias, credenciales ni integraciones.
+
+            No conviertas pendientes futuros en bloqueos actuales.
+
+            Si hay contradicciones entre agentes, marcarlas.
+
+            Si algún agente propone una funcionalidad fuera del pedido original, descartala
+            de la síntesis final.
+
+            CONTROL FINAL DE CONSISTENCIA:
+
+            Antes de responder, compará:
+
+            Pedido original del usuario.
+
+            OBJETIVO_CONFIRMADO del AI Project Manager.
+
+            Respuestas de los agentes.
+
+            No presentes como plan final:
+
+            login,
+
+            registro,
+
+            contraseñas,
+
+            autenticación,
+
+            entidad Usuario,
+
+            salvo que el usuario lo haya pedido explícitamente.
+
+            Si detectás desvío de foco, indicá:
+
+            "Se descartaron propuestas fuera de alcance".
+
+            CRITERIO DE VEREDICTO:
+
+            Usá BLOQUEADO solo si no se puede definir el plan de construcción.
+
+            Usá APROBADO CON CONDICIONES si:
+
+            faltan credenciales,
+
+            faltan proveedores externos,
+
+            falta n8n,
+
+            falta Hostinger,
+
+            falta deploy,
+
+            pero la construcción puede planificarse igual.
+
+            Separá siempre:
+
+            riesgos actuales,
+
+            pendientes para fase Hostinger/n8n.
+
+            Respondé siempre con texto completo.
+
+            No cortes palabras.
+
+            No respondas solo con el veredicto.
+
+            Si el resultado es BLOQUEADO, explicá por qué y qué condición desbloquea
+            el avance.
+
+            Pedido original:
+
+            {{sys.query}}
+
+            ENTRADA AI PROJECT MANAGER:
+
+            {{#1781002522422.text#}}
+
+            ENTRADA UI DESIGNER:
+
+            {{#17810025335330.text#}}
+
+            ENTRADA FRONTEND:
+
+            {{#17810025551660.text#}}
+
+            ENTRADA DATABASE:
+
+            {{#17810025486930.text#}}
+
+            ENTRADA BACKEND:
+
+            {{#17810025511980.text#}}
+
+            ENTRADA INTEGRATION:
+
+            {{#17810025416070.text#}}
+
+            ENTRADA BACKEND QA:
+
+            {{#17810025463110.text#}}
+
+            ENTRADA UX QA:
+
+            {{#17810025395280.text#}}
+
+            ENTRADA INTEGRATION QA:
+
+            {{#17810025436670.text#}}
+
+            Salida obligatoria:
+
+            Resultado del Equipo Constructor
+
+            Veredicto técnico
+
+            APROBADO / APROBADO CON CONDICIONES / BLOQUEADO
+
+            Motivo:
+
+            Condición para avanzar:
+
+            Plan de construcción
+
+            Frontend:
+
+            Backend:
+
+            Base de datos:
+
+            Integraciones:
+
+            QA:
+
+            Pendientes para Hostinger/n8n
+
+            [máximo 3 bullets]
+
+            Riesgos
+
+            [máximo 3 bullets]
+
+            Próximo paso
+
+            [una sola acción concreta]'
+        selected: false
+        title: BUILD SYNTHESIS
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '17810027119540'
+      position:
+        x: 1002.1410943556846
+        y: 344.4508876390873
+      positionAbsolute:
+        x: 1002.1410943556846
+        y: 344.4508876390873
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -442.5983743058961
+      y: 78.56657402289648
+      zoom: 0.6299605172358252
+  rag_pipeline_variables: []
