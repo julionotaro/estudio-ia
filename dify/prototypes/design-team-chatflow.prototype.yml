@@ -618,7 +618,7 @@ workflow:
             [una sola acción concreta]
 
 
-            Al final de tu salida incluí la sección "## Control de calidad (Design Critic)" con el veredicto del auditor (APROBADO / APROBADO CON CORRECCIONES / RECHAZADO) y sus 3 correcciones priorizadas. Si el veredicto es RECHAZADO, abrí tu Veredicto general declarándolo.'
+            REGLA DE FIDELIDAD (inviolable): en la sección "## Control de calidad (Design Critic)" transcribí el veredicto del auditor de forma LITERAL, copiando su línea "VEREDICTO: ..." exactamente como aparece. PROHIBIDO reinterpretarlo, suavizarlo o cambiarlo: si el auditor dice RECHAZADO, tu síntesis dice RECHAZADO y tu Veredicto general abre declarándolo. Incluí también sus 3 correcciones priorizadas tal cual.'
         - id: 1838ef5b-39e8-48ef-9a70-d5524ebd30f9
           role: user
           text: 'Pedido original:
@@ -751,6 +751,17 @@ workflow:
             - No propongas el diseño correcto completo: señalá el problema y la dirección de corrección en 1-2 líneas.
 
             - Si el equipo trabajó bien, decilo: no inventes problemas para justificar tu rol.
+
+
+            ## Checks obligatorios adicionales
+
+            - Si el pedido incluye un PLAZO, verificá que exista un plan de fases detallado (semanas, entregables, recortes). Su ausencia es violación ALTA.
+
+            - Verificá que cada agente respetó su rol: el Client Liaison encuadra pero NO propone arquitectura ni stack; el que diseña es el Architect. Invasión de rol = violación MEDIA.
+
+            - Verificá que las decisiones de presentación ya tomadas por el cliente se respeten literalmente (ej.: si pidió sub-estados internos NO visibles por defecto, mostrarlos en la pantalla principal es violación ALTA).
+
+            - Tu veredicto final debe escribirse en una línea EXACTA con este formato: VEREDICTO: RECHAZADO (o APROBADO, o APROBADO CON CORRECCIONES).
 
             '
         - id: 8fc9729e-a2b1-4a39-a352-4f163e8f1777
