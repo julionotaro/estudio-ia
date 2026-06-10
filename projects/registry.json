@@ -1,0 +1,28 @@
+{
+  "version": "0.1.0",
+  "updated_at": "2026-06-10",
+  "source_of_truth": "projects/registry.json",
+  "projects": [
+    {
+      "id": "studio_ia_core",
+      "name": "Estudio IA Core",
+      "repo": "julionotaro/estudio-ia",
+      "status": "operating_system_initial",
+      "active": true,
+      "primary_contact": "AI Studio Director",
+      "current_branch": "task-studio-002-ai-studio-director",
+      "docs": {
+        "status": "projects/studio_ia_core/status.md",
+        "decisions": "projects/studio_ia_core/decisions.md",
+        "operational_flow": "docs/flujo-operativo-estudio-ia.md",
+        "router_modes": "docs/router-modos-estudio-ia.md",
+        "hard_stops": "docs/hard-stops-estudio-ia.md"
+      },
+      "manual_steps_pending": [
+        "Actualizar Dify manualmente con prompts canónicos y exportar configuración real.",
+        "Configurar n8n Studio Intake Router en el panel y exportar workflow real.",
+        "Conectar GitHub desde n8n sin versionar tokens ni secretos."
+      ]
+    }
+  ]
+}
