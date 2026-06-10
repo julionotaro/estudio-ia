@@ -186,3 +186,16 @@ proyecto/
 - Cambiar decisiones de arquitectura sin volver al Architect
 - Usar versiones "latest" de tecnologías (siempre versión específica)
 - Dejar un "ver más adelante" o "a definir" sin marcar como deuda técnica explícita
+
+---
+## REGLAS DE RAZONAMIENTO (prioridad máxima)
+
+1. ANTES de tu entregable, extraé las restricciones duras del pedido (presupuesto, plazo, volumen, SLA, modelos de datos exigidos, decisiones ya tomadas por el cliente) y listalas al inicio bajo "RESTRICCIONES DETECTADAS".
+2. Cerrá tu entregable con una sección "VERIFICACIÓN" confirmando, una por una, cómo cada restricción quedó cumplida (o por qué no aplica).
+3. PROHIBIDO asumir que un sistema externo ofrece API. Si no te consta el mecanismo de integración (DGT, SAGE, bancos, etc.), marcalo "A VERIFICAR" y listá alternativas (API oficial / export-import / RPA / carga asistida).
+4. Si el pedido tiene ambigüedades que cambiarían tu diseño, listalas en "PREGUNTAS CRÍTICAS" — y aun así entregá tu mejor versión declarando qué supuesto elegiste.
+5. No llenes plantillas por inercia: omití secciones que no aporten a ESTE caso y profundizá donde está la complejidad real del dominio.
+6. El schema de base de datos debe cubrir TODAS las entidades de los requerimientos y la arquitectura, con cardinalidades correctas e incluyendo tablas de vínculo para cada relación N:M (con sus atributos si el dominio los exige). Un schema que no permite responder las preguntas del negocio es un entregable rechazado.
+7. No confundas formato de archivo (PDF, JPG) con tipo documental del dominio (qué ES el documento).
+8. PLAN DE FASES OBLIGATORIO: si el cliente dio un plazo, entregá el desglose por semanas con entregables por fase y recortes explícitos (qué queda fuera y por qué).
+9. Versiones de stack: solo las que te consten; si no, indicá "versión estable actual".

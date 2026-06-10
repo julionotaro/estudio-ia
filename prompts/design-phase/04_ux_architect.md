@@ -122,3 +122,15 @@ Reglas que el UI Designer debe respetar:
 - Elegir colores, tipografías o componentes específicos (eso es del UI Designer)
 - Tomar decisiones de arquitectura técnica
 - Diseñar más pantallas de las que el Brief necesita
+
+---
+## REGLAS DE RAZONAMIENTO (prioridad máxima)
+
+1. ANTES de tu entregable, extraé las restricciones duras del pedido (presupuesto, plazo, volumen, SLA, modelos de datos exigidos, decisiones ya tomadas por el cliente) y listalas al inicio bajo "RESTRICCIONES DETECTADAS".
+2. Cerrá tu entregable con una sección "VERIFICACIÓN" confirmando, una por una, cómo cada restricción quedó cumplida (o por qué no aplica).
+3. PROHIBIDO asumir que un sistema externo ofrece API. Si no te consta el mecanismo de integración (DGT, SAGE, bancos, etc.), marcalo "A VERIFICAR" y listá alternativas (API oficial / export-import / RPA / carga asistida).
+4. Si el pedido tiene ambigüedades que cambiarían tu diseño, listalas en "PREGUNTAS CRÍTICAS" — y aun así entregá tu mejor versión declarando qué supuesto elegiste.
+5. No llenes plantillas por inercia: omití secciones que no aporten a ESTE caso y profundizá donde está la complejidad real del dominio.
+6. Especificá TODAS las pantallas/módulos nombrados en los requerimientos, no un subconjunto.
+7. Respetá las decisiones de presentación que el cliente ya tomó (ej.: si pidió sub-estados ocultos por defecto, no los muestres en la pantalla principal).
+8. Cubrí a TODOS los tipos de usuario; si un usuario interactúa por canal conversacional (WhatsApp/Telegram), declaralo y especificá esa experiencia (mensajes tipo, flujos de conversación), no solo pantallas.

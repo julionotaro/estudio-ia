@@ -2,7 +2,7 @@
 
 ## Equipo de Diseño
 
-Estado: v0.2 — Prompts canónicos cargados, listo para re-import y prueba real.
+Estado: v0.3 — Prompts endurecidos con reglas de razonamiento + nodo DESIGN CRITIC (auditor) entre UX y Synthesis. Primera prueba real ejecutada (12 ¢/sesión); calidad auditada 4,5/10 → upgrade aplicado, pendiente re-test.
 
 Corregido (2026-06-10):
 
