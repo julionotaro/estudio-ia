@@ -2,36 +2,36 @@
 
 ## Equipo de Diseño
 
-Estado: Prototype v0.1 validado en Dify Cloud.
+Estado: v0.2 — Prompts canónicos cargados, listo para re-import y prueba real.
 
-Validado:
+Corregido (2026-06-10):
 
-- Ejecución en cadena.
-- Paso de variables entre nodos.
-- Final Synthesis.
-- Answer con salida limpia.
-- Prompts temporales de prueba.
+- Eliminado encabezado "MODO PRUEBA ACTIVO" de los 6 nodos LLM.
+- System prompts reemplazados por los canónicos de /prompts/design-phase.
+- Variables entre nodos corregidas a sintaxis válida {{#nodeId.text#}} (BA, Architect y UX recibían placeholders literales).
+- Instrucciones ARC movidas del rol assistant al system prompt (Architect y Tech Lead).
+- Modelos: gpt-4o en Liaison, BA, Architect, Tech Lead y UX; gpt-4o-mini en Final Synthesis.
+- max_tokens explícito en todos los nodos (2048/4096) para evitar truncado.
 
 Pendiente:
 
-- Reemplazar prompts temporales por prompts canónicos versionados.
-- Exportar DSL/YAML desde Dify.
-- Guardar exportación en /dify/prototypes o /dify/apps.
+- Re-importar YAML en Dify (Hostinger) y archivar la app anterior.
+- Prueba real de punta a punta con caso de cliente.
+- Knowledge bases (ARC master, plantillas) en Architect y Tech Lead.
 
 ## Equipo Constructor
 
-Estado: Prototype v0.1 validado en Dify Cloud.
+Estado: v0.2 — Prompts canónicos cargados, cadena de contexto conectada.
 
-Validado:
+Corregido (2026-06-10):
 
-- Ejecución en cadena.
-- Paso de variables entre nodos.
-- Build Synthesis.
-- Criterio de bloqueo ajustado.
-- Prompts temporales de prueba.
+- Prompts de prueba (~1.000 chars) reemplazados por los canónicos de /prompts/builder-phase y /prompts/support-phase.
+- Reglas de consistencia (OBJETIVO_CONFIRMADO) preservadas al final de cada system prompt.
+- Agregados user prompts con variables encadenadas en los 10 nodos: cada agente ahora recibe el output real de los anteriores (antes recibían solo su system prompt, sin input).
+- Modelos: gpt-4o en PM, Frontend Builder, Backend Builder y Database; gpt-4o-mini en UI Designer, Integration, los 3 QA y Build Synthesis.
+- max_tokens explícito en todos los nodos.
 
 Pendiente:
 
-- Probar con especificaciones completas del Equipo de Diseño.
-- Reemplazar prompts temporales por prompts canónicos.
-- Exportar DSL/YAML desde Dify.
+- Re-importar YAML en Dify (Hostinger) y archivar la app anterior.
+- Probar con especificaciones completas generadas por el Equipo de Diseño.
