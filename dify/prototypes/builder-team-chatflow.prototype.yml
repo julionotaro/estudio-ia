@@ -215,7 +215,58 @@ workflow:
       type: custom
       width: 242
     - data:
-        answer: '{{#17810027119540.text#}}'
+        answer: '{{#17810027119540.text#}}
+
+
+          ---
+
+
+          ## ANEXO — Trabajo completo del equipo (modo evaluación)
+
+
+          ### AI Project Manager
+
+          {{#1781002522422.text#}}
+
+
+          ### UI Designer
+
+          {{#17810025335330.text#}}
+
+
+          ### Frontend Builder
+
+          {{#17810025551660.text#}}
+
+
+          ### Database Agent
+
+          {{#17810025486930.text#}}
+
+
+          ### Backend Builder
+
+          {{#17810025511980.text#}}
+
+
+          ### Integration Agent
+
+          {{#17810025416070.text#}}
+
+
+          ### Backend QA
+
+          {{#17810025463110.text#}}
+
+
+          ### UX QA
+
+          {{#17810025395280.text#}}
+
+
+          ### Integration QA
+
+          {{#17810025436670.text#}}'
         selected: false
         title: Answer
         type: answer
