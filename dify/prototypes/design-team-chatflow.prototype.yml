@@ -825,7 +825,7 @@ workflow:
 
             ---
             INSTRUCCIONES OPERATIVAS OBLIGATORIAS:
-            Al final de tu respuesta incluí obligatoriamente esta sección:
+            Tu respuesta DEBE COMENZAR con esta sección como PRIMERAS LÍNEAS (antes de restricciones, antes de todo — así el Tech Lead la encuentra siempre, incluso si tu output se trunca):
 
             ## ARC_STATUS
             ARC completado: SÍ
@@ -1097,11 +1097,11 @@ workflow:
 
             ---
             INSTRUCCIONES OPERATIVAS OBLIGATORIAS:
-            Antes de responder, buscá en la arquitectura recibida la sección ARC_STATUS.
+            Antes de responder, buscá la cadena "ARC_STATUS" en CUALQUIER parte de la arquitectura recibida (puede estar al inicio o al final).
 
-            Si dice "ARC completado: SÍ", entonces continuá.
-            No digas "ARC no recibido" si la arquitectura contiene una sección ARC_STATUS.
-            Si no encontrás ARC_STATUS, respondé solo: "Bloqueado: falta ARC_STATUS del System Architect".
+            Si la cadena "ARC_STATUS" aparece en el texto recibido → continuá SIEMPRE con tu entregable completo. No importa el formato exacto.
+            Solo si la cadena "ARC_STATUS" NO existe en absoluto en la arquitectura recibida, respondé: "Bloqueado: falta ARC_STATUS del System Architect".
+            ANTE LA DUDA: continuá con tu entregable y anotá la duda en PREGUNTAS CRÍTICAS. Un entregable completo con una duda anotada vale más que un bloqueo falso. Declararte bloqueado cuando el ARC_STATUS sí está presente es un fallo grave de tu rol.
 
             ---
             ## REGLAS DE RAZONAMIENTO (prioridad máxima)
@@ -1580,6 +1580,8 @@ workflow:
             - Si el cliente fijó una decisión de visualización (ej.: calendario siempre por sede), verificá que exista la pantalla que la implementa literalmente. Su ausencia es violación ALTA.
 
             - Verificá que la lista de RESTRICCIONES de cada agente incluya TODAS las cifras del pedido (volúmenes, frecuencias, sedes, umbrales). Omitir cifras es violación MEDIA.
+
+            - ENTREGABLE AUSENTE: si cualquier agente produjo menos de 100 palabras, una sola línea, o un mensaje de bloqueo (ej. "Bloqueado: ..."), es violación CRÍTICA — los entregables de ese rol están AUSENTES y el diseño NO puede aprobarse. Un Tech Lead bloqueado significa: sin schema, sin plan de fases, sin specs. Veredicto obligatorio en ese caso: RECHAZADO, con la primera corrección siendo desbloquear a ese agente. PROHIBIDO declarar "no se identificaron violaciones" si un entregable está ausente.
         - id: 8fc9729e-a2b1-4a39-a352-4f163e8f1777
           role: user
           text: |-
