@@ -1132,7 +1132,7 @@ workflow:
         isInLoop: false
         model:
           completion_params:
-            max_tokens: 2048
+            max_tokens: 16000
           mode: chat
           name: gpt-4o-mini
           provider: langgenius/openai/openai
@@ -1210,10 +1210,19 @@ workflow:
             ---
 
 
-            ## ANEXO — Trabajo completo del equipo (modo evaluación)
+            ## ANEXO — Evidencia del equipo (modo evaluación)
 
-            [Reproducí el output completo de cada agente bajo su nombre: Project Manager, UI Designer, Frontend Builder, Database
-            Agent, Backend Builder, Integration Agent, Backend QA, UX QA, Integration QA. Sin resumir ni editar.]'
+            [Reproducí bajo el nombre de cada agente, SIN resumir ni editar:
+
+            - De cada builder (UI Designer, Frontend Builder, Database Agent, Backend Builder, Integration Agent): su bloque
+            BUILD_STATUS completo y su bloque VERIFICACIÓN completo. OMITÍ el código intermedio.
+
+            - De cada QA (Backend QA, UX QA, Integration QA): su reporte COMPLETO, incluida la línea VEREDICTO.
+
+            - Del Project Manager: su JSON de estado.
+
+            Orden: Project Manager, builders, QAs. El reporte del Integration QA va SIEMPRE completo y al final — si hay que
+            recortar algo por espacio, recortá builders, nunca QAs.]'
         - id: 04855114-2ab0-4fe4-bc1d-e2d388bdda83
           role: user
           text: 'Pedido original:
