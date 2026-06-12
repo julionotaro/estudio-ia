@@ -102,6 +102,9 @@
 ### SAGE / contabilidad-facturación
 53. ¿Usan SAGE u otro software de contabilidad/facturación? ¿Qué datos del trámite terminan ahí y quién los carga? ¿Se cargan a mano copiando de otro lado? ¿Existe alguna exportación/importación (Excel, CSV) que ya usen?
 
+### Tempus (sistema consolidado de gestión diaria)
+54-bis. ¿Qué se registra en Tempus y qué NO? ¿Quién lo administra/configura? ¿Tiene exportaciones (Excel/CSV) o alguna forma de conectarse? ¿Qué datos cargás en Tempus que también cargás en otro lado?
+
 ### Acceso y seguridad (hallazgo de la corrida de construcción)
 54. ¿Quiénes deberían poder entrar al panel del sistema? ¿Solo los 4 administrativos o también el dueño/gerente/gestorías? ¿Todos verían lo mismo o habría niveles?
 55. ¿Desde dónde se conectarían? (solo PCs de la oficina, también desde casa, móvil) ¿Hoy cómo se identifican en los sistemas que usan (usuario/contraseña, certificado, nada)?
