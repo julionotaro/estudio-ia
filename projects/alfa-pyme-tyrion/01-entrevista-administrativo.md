@@ -10,6 +10,8 @@
 - No corrijas al entrevistado ni le expliques cómo "debería" ser el proceso. Queremos el **as-is**, no el ideal.
 - Marcá con ⚠ cualquier respuesta tipo "depende" y preguntá: "¿de qué depende?". Ahí viven las reglas de negocio.
 
+> **⚡ PRIORIDAD MÁXIMA — Si el tiempo se corta, el Bloque 14 va primero.** Son los bloqueantes detectados por las corridas de diseño (#42/#46) y construcción (#48): sin esas respuestas, el sistema no puede aprobarse.
+
 ---
 
 ## Bloque 1 — Contexto y volumen
@@ -90,6 +92,31 @@
 
 ---
 
+## Bloque 14 — Bloqueantes de diseño ⚡ PRIORIDAD MÁXIMA
+*(Surgidos de las corridas del estudio: #42/#46 en diseño, #48 en construcción. Cada respuesta destraba una parte del sistema.)*
+
+### DGT
+51. Cuando consultás o presentás algo ante la DGT, ¿exactamente cómo lo hacés hoy? (¿sede electrónica con certificado digital? ¿portal de colaborador? ¿algún software de gestoría? ¿presencial?) Mostrame el último caso paso a paso, pantalla por pantalla si se puede.
+52. ¿Cada cuánto llega una observación o requerimiento de la DGT? (por semana o por mes, a ojo) ¿Por dónde llega y cómo te enterás?
+
+### SAGE / contabilidad-facturación
+53. ¿Usan SAGE u otro software de contabilidad/facturación? ¿Qué datos del trámite terminan ahí y quién los carga? ¿Se cargan a mano copiando de otro lado? ¿Existe alguna exportación/importación (Excel, CSV) que ya usen?
+
+### Acceso y seguridad (hallazgo de la corrida de construcción)
+54. ¿Quiénes deberían poder entrar al panel del sistema? ¿Solo los 4 administrativos o también el dueño/gerente/gestorías? ¿Todos verían lo mismo o habría niveles?
+55. ¿Desde dónde se conectarían? (solo PCs de la oficina, también desde casa, móvil) ¿Hoy cómo se identifican en los sistemas que usan (usuario/contraseña, certificado, nada)?
+
+### Flujo papel (40% del volumen)
+56. El papel que llega: ¿quién lo escanea, con qué equipo, cuándo (al llegar, por lotes, a fin de día)? ¿Qué pasa con el papel físico después: dónde se guarda y cómo lo encontrás si hace falta el original?
+
+### Conversación real WhatsApp/Telegram
+57. Mostrame (o leeme) una conversación real reciente de WhatsApp con un cliente por un trámite: desde el primer mensaje hasta el cierre. ¿Qué partes de esa conversación son siempre iguales y cuáles cambian?
+
+### Presupuesto y decisión
+58. *(Para el dueño/decisor, no el administrativo)* ¿Qué presupuesto mensual real hay para herramientas IA del proyecto? ¿Quién aprueba y contra qué se mide el éxito (horas ahorradas, trámites/día, errores)?
+
+---
+
 ## Salidas esperadas de esta entrevista
 Al terminar, deberíamos poder completar:
 - **Catálogo de tipos de trámite** con sus documentos requeridos (Bloques 1 y 3).
@@ -100,3 +127,6 @@ Al terminar, deberíamos poder completar:
 - **Frontera Tyrion / humano**: qué se automatiza y qué exige criterio (Bloque 7).
 - **Inventario de sistemas actuales** e integraciones necesarias (Bloques 8, 9 y 11).
 - **Línea base de tiempos** para medir el impacto del proyecto (Bloque 12).
+- **Mecanismos DGT y SAGE confirmados** → destraba a los agentes de integración (Bloque 14).
+- **Modelo de acceso y autenticación** → destraba el rechazo del QA de construcción (Bloque 14).
+- **Circuito del papel y conversación WhatsApp tipo** → completa el flujo conversacional rechazado en diseño (Bloque 14).
