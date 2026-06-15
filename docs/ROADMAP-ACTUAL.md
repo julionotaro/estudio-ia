@@ -1,64 +1,160 @@
 # ROADMAP Y ESTADO ACTUAL — Estudio IA
-**Actualizado:** 2026-06-14 (entrevista Tyrion sesión 1) · **Función:** memoria compartida del proyecto.
+**Actualizado:** 2026-06-15 · **Función:** memoria compartida. Pegar en cualquier chat nuevo para retomar contexto.
 
-## Estado actual (qué funciona hoy)
+---
 
-- **Infraestructura:** Dify + n8n self-hosted en Hostinger (`187.127.233.43`), repo GitHub `estudio-ia` como fuente de verdad.
-- **Equipo de Diseño (Dify):** 7 agentes + 3 nodos Knowledge Retrieval (BA, Architect, Tech Lead). Prompts endurecidos verificados: generalización 9,5/11, KB activo, fix corrida #42→#46 confirmado (ARC_STATUS al inicio, gate tolerante del Tech Lead, Critic con RECHAZADO obligatorio ante entregable ausente).
-- **Corrida Tyrion #2 (diseño, exec #46, 12/06):** `VEREDICTO: RECHAZADO` — legítimo: DGT/SAGE sin mecanismo (PENDIENTE real del brief) + flujo conversacional incompleto. El Tech Lead entregó paquete completo (schema, contratos, plan 5 semanas).
-- **Equipo Constructor (Dify) ENDURECIDO v0.5.0:** 10 nodos. Pipeline verificado en 3 corridas (exec #48/#49/#50, 12/06). Fidelidad de veredicto perfecta. 200-215s, ~$0.09/run.
-- **Bridge n8n → Dify:** "Dify Bridge - Equipo Diseño" (`0tGxducQ0fq5uKbs`), webhook `/webhook/dify-design`. "Studio Intake Router" (`WxTdNZUAGZjPbYH6`), webhook `/webhook/studio-intake`, modos design/build, keys actualizadas (builder: regenerada 12/06). ⚠ Briefs largos (>2-3K chars) fallan vía MCP execute_workflow; workaround: workflows temporales con brief hardcodeado en Set node + Code node `JSON.stringify($json)`.
-- **Workflows temporales activos (borrar cuando exista bridge definitivo):** "Tyrion Design Run (temp)" (`lbzEIUgvtGZTpkdv`, brief diseño) y "Builder Team Run (temp)" (`qkwMnSi23HVgIWgC`, specs constructor).
-- **Conector MCP n8n ("Studio-julio"):** funcionando, control total de n8n desde Claude.
-- **GitHub:** prompts canónicos endurecidos en `prompts/` (design + builder + QA). DSL canónicos en `dify/apps/` (`builder-team-chatflow.v1.yml`). Issues viejos (#1-8) cerrados; tracking activo en **#10**.
+## 1. EL ESTUDIO — Estado de la fábrica
 
-## Frente comercial
-- **Handoff comercial v1.0:** `docs/handoff-comercial.md` — visión Estudio IA + Alfa-Pyme como caso demostrador.
-- **Hallazgo clave:** la oficina usa **Tempus** como sistema consolidado. No hay WhatsApp/Telegram. DGT es siempre presencial.
-- Regla: no prometer integraciones (DGT/SAGE/Tempus) hasta definir mecanismo; promesa segura = Tyrion prepara, humano ejecuta.
+### Infraestructura ✅
+- Dify + n8n self-hosted en Hostinger KVM2 (`187.127.233.43`)
+- Repo `julionotaro/estudio-ia` como fuente de verdad
 
-## Cómo invocar a los equipos desde Claude
-1. Brief corto (<2K chars): `execute_workflow` sobre el Studio Intake Router (`WxTdNZUAGZjPbYH6`) con body `{query, mode: design|build}`.
-2. Brief largo: editar el workflow temporal correspondiente (Set node con el brief) y ejecutarlo.
-3. Diseño tarda 80-125s (~$0.14/run); constructor 200-210s (~$0.10/run). Leer resultado con `get_execution` + `includeData:true` filtrando el nodo HTTP.
+### Equipo de Diseño ✅ — EN USO ACTIVO
+7 agentes + 3 nodos Knowledge Retrieval (BA, Architect, Tech Lead).
+YAML canónico: `dify/apps/design-team-chatflow.v3.yml` (commit `2f9e377c`).
+Fixes v3: ARC_STATUS al inicio del Architect, gate tolerante del Tech Lead,
+Critic con check WhatsApp condicional.
+Score verificado en test de generalización: 9.5/11.
 
-## Fases por delante
+Invocar vía n8n:
+- Brief corto (<2K): `execute_workflow` sobre Studio Intake Router (`WxTdNZUAGZjPbYH6`)
+- Brief largo: workflow temporal "Tyrion Design Run (temp)" (`lbzEIUgvtGZTpkdv`)
+  con brief en Set node (publicar después de cada update).
 
-### FASE 1.5 — Cerrar diseño Tyrion
-1. ~~Importar YAML con fixes (commit 8faf3b04)~~ ✅
-2. ~~Entrevista sesión 1 con el administrativo~~ ✅ (13/06/2026) — bloqueantes críticos resueltos. Spec v2.1 actualizada.
-3. **[Julio, pendiente]** Entrevista sesión 2 (~75 min): estados Tempus (B6, CRÍTICO), flujo matriculaciones (B4), cadetería, errores docs, cierre proceso, automatización. Guía: `projects/alfa-pyme-tyrion/entrevista-tyrion-sesion2.docx`.
-4. ~~Re-correr Tyrion con fixes~~ ✅ (exec #46)
+### Equipo Constructor de Dify ✅ — VERIFICADO, ROL REDEFINIDO
+10 nodos. Pipeline diseño → constructor → auditoría verificado (exec #48-50).
+ROL EN ADELANTE: prototipado rápido de proyectos pequeños y demostración del Estudio.
+Para proyectos reales como Tyrion → Claude Code construye sobre las specs del Diseño.
+El Constructor no queda obsoleto; cambia de rol.
 
-### FASE 2 — Equipo Constructor al mismo nivel ✅ COMPLETA Y VERIFICADA
-5. ~~Endurecer builder + 3 QA~~ ✅ (v0.5.0)
-6. ~~Pipeline completo diseño → constructor → auditoría~~ ✅ (exec #48/#49/#50)
+### Pipeline del Estudio (flujo canónico)
+```
+Entrevista → Spec → Equipo de Diseño → spec APROBADA → Claude Code construye
+```
+El Equipo de Diseño sigue siendo el primer paso. Su output es lo que consume
+Claude Code para construir, en lugar del Equipo Constructor.
 
-### FASE 3 — Proyecto Tyrion de verdad
-7. **[Listo para ejecutar]** Corrida de diseño con spec v2.1. Brief en `02-proceso-operativo-v2.md` §15.
-8. **[Julio, post sesión 2]** Completar spec v2.2 con estados Tempus y flujo matriculaciones → re-subir al Knowledge "Estudio" en Dify.
-9. **[Ambos]** Corrida definitiva: diseño aprobado limpio → constructor aprobado limpio.
-10. **[Decisión]** Construcción real en repo `alfa-pyme` (evaluar Claude Code).
+### Bridge n8n → Dify
+- "Dify Bridge - Equipo Diseño" (`0tGxducQ0fq5uKbs`), webhook `/webhook/dify-design`
+- "Studio Intake Router" (`WxTdNZUAGZjPbYH6`), webhook `/webhook/studio-intake`
+- Keys actualizadas (builder: regenerada 12/06)
+- ⚠ Briefs largos (>2-3K chars): usar workflow temporal con Set node + Code node JSON.stringify
 
-### FASE 4 — Operación del estudio
-11. Orquestador con criterio: Client Liaison como Agent app en Dify.
-12. Deploy Agent + Documenter (modelos ligeros).
-13. URL estable para el MCP de Dify.
-14. Bridge n8n definitivo con soporte de briefs largos → borrar 2 workflows temporales.
-15. n8n: triggers de entrada (email → pipeline) cuando Tyrion v1 exista.
+### Conector MCP n8n ("Studio-julio")
+Funcionando. Control total de n8n desde Claude.ai. Limit: ~2-2.5K chars en execute_workflow.
 
-## Documentos clave Tyrion
-- `projects/alfa-pyme-tyrion/01-entrevista-administrativo.md` — guía completa de entrevista v2.2
-- `projects/alfa-pyme-tyrion/02-proceso-operativo-v2.md` — spec v2.1 (actualizada 14/06, brief listo para diseño)
-- `projects/alfa-pyme-tyrion/04-resultados-entrevista-sesion1.md` — respuestas capturadas sesión 1
-- `docs/handoff-comercial.md` — visión comercial y posicionamiento
+---
 
-## Seguridad
-- ⚠ **Token de GitHub** (`ghp_FaGk...`, clásico, todos los repos): activo por decisión de Julio hasta cerrar el setup. **Revocar y pasar a fine-grained al terminar.**
-- ⚠ Keys de apps Dify hardcodeadas en workflows n8n. Key del builder regenerada el 12/06.
-- Lección: borrar una app en Dify mata su API key. Importar DSL SIEMPRE desde dentro de la app (Import DSL → Publish).
+## 2. TYRION — Proyecto Alfa-Pyme
 
-## Cómo retomar contexto en un chat nuevo
-1. Activar el conector "Studio-julio" (n8n) en el chat (+ → conectores).
-2. Pegar este documento (o dar el token de GitHub para que Claude lea el repo).
-3. Indicar la fase y el paso en el que estamos.
+### Cliente
+Colegio de Gestores. 70 gestorías. ~200 trámites/día (170 transferencias + 30 matriculaciones).
+4 administrativos + dueño. SLA: cierre en el día. Presupuesto sistema: €150/mes.
+
+### Diseño completado ✅
+Corridas del Equipo de Diseño:
+- exec #46 (12/06): RECHAZADO — brief sin datos reales
+- exec #51 (14/06): RECHAZADO — KB desactualizado
+- exec #54 (14/06): APROBADO CON CORRECCIONES — KB actualizado, score 9/10
+- exec #55 (15/06): RECHAZADO — YAML viejo (bug ARC_STATUS)
+- exec #56 (15/06): APROBADO CON CORRECCIONES — YAML v3, score 9.5/10
+
+Spec canónica: `projects/alfa-pyme-tyrion/02-proceso-operativo-v2.md` (v2.1)
+Brief listo para diseño: §15 del spec.
+
+### Entrevista con el administrativo
+Sesión 1 completada (13/06). Resultados: `projects/alfa-pyme-tyrion/04-resultados-entrevista-sesion1.md`
+Sesión 2 pendiente. Guía: `entrevista-tyrion-sesion2.docx`
+
+Preguntas CRITICAS para sesión 2 (no olvidar):
+1. ¿Qué dato lleva el comprobante físico de DGT? (número, sello, fecha)
+2. Tiempos reales: ¿cuánto tarda un trámite limpio? ¿Cuáles son las 3 tareas que más consumen?
+3. Canal oficial de comunicación con gestorías: ¿Tempus, email o teléfono?
+4. ¿Cuántos recordatorios y cada cuánto antes de escalar?
+5. % de documentación que llega mal y error más frecuente
+6. ¿Reenvío corregido reemplaza o conviven las dos versiones?
+7. ¿Flujo de matriculaciones = transferencias? ¿Qué se imprime al finalizar?
+8. Listado de documentos requeridos por tipo de trámite (PROMETIDO en B3.2) → carga en tabla requisitos_tramite
+9. Cadetería: ¿comprobante de envío a DGT antes de salir?
+10. ¿Qué estados ambiguos existen en Tempus además de los 4 confirmados?
+
+### Construcción iniciada ✅
+Repo: `julionotaro/tyrion` (privado, creado 15/06)
+Commit fundamento: `63863e8a`
+
+Construido:
+- Schema PostgreSQL completo (8 tablas, 46 statements, validados con parser real)
+- Clasificador documental con Claude API (Haiku para clasificación masiva)
+- Catálogo del dominio DGT (tipos documentales + confusiones frecuentes)
+- 15 tests pasando (cliente mockeado)
+
+PRINCIPIO DE ESCALADO (confirmado en sesión):
+1. Tyrion intenta resolver solo
+2. Si falta doc → pide a la GESTORÍA (mensaje PREPARADO, reintentos)
+3. Solo si gestoría no responde → escala al ADMINISTRATIVO
+El administrativo es el ÚLTIMO recurso, no el primero.
+
+### Próximos módulos (Claude Code sobre fundamento)
+1. Motor de cotejo: detectado → válido/evidencia/rechazado contra checklist
+2. Ingesta de email (canal principal de entrada)
+3. Pantalla Control (6 macro-estados)
+4. Cruce hoja de caja vs Tempus → preparar albarán para SAGE
+
+---
+
+## 3. HOJA DE RUTA
+
+### Completado
+- [x] Infraestructura Dify + n8n
+- [x] Equipo de Diseño (7 agentes, prompts endurecidos, KB activo)
+- [x] Equipo Constructor verificado (pipeline completo, rol redefinido)
+- [x] Entrevista Tyrion sesión 1 (bloqueantes críticos resueltos)
+- [x] Spec Tyrion v2.1 con datos reales
+- [x] Corrida de diseño APROBADA (exec #56, score 9.5/10)
+- [x] Fundamento de construcción: schema + clasificador + tests
+
+### En curso
+- [ ] Entrevista Tyrion sesión 2 (10 preguntas documentadas)
+- [ ] Motor de cotejo (siguiente módulo en Claude Code)
+
+### Pendiente — Tyrion
+- [ ] Ingesta de email
+- [ ] Pantalla Control + Trámites
+- [ ] Cruce hoja de caja / SAGE
+- [ ] Integración con Tempus (cuando haya API o mecanismo alternativo)
+- [ ] Deploy en Hostinger KVM2
+
+### Pendiente — Estudio
+- [ ] Client Liaison como Agent app independiente en Dify
+- [ ] Deploy Agent + Documenter (prompts ya en `prompts/support-phase/`)
+- [ ] URL estable para el MCP de Dify (Cloudflare Tunnel o dominio propio)
+- [ ] Bridge n8n definitivo con soporte briefs largos → borrar workflows temporales
+- [ ] Triggers de entrada: email → pipeline automático
+
+---
+
+## 4. SEGURIDAD ⚠
+
+- Token GitHub (`ghp_FaGk...`, clásico, todos los repos): activo por decisión de Julio.
+  **Revocar y pasar a fine-grained al terminar la sesión de construcción.**
+- Keys Dify hardcodeadas en workflows n8n. Key builder regenerada 12/06.
+- CLAUDE.md en `julionotaro/tyrion` contiene instrucciones de contexto para Claude Code
+  (no contiene credenciales; el token se configura en git remote localmente).
+
+---
+
+## 5. CÓMO RETOMAR CONTEXTO
+
+### En esta conversación (diseño + estrategia)
+1. Activar conector "Studio-julio" (n8n).
+2. Pegar este documento.
+3. Indicar fase y paso.
+
+### En Claude Code (construcción)
+```bash
+git clone https://github.com/julionotaro/tyrion.git
+cd tyrion
+git remote set-url origin https://TOKEN@github.com/julionotaro/tyrion.git
+claude
+```
+El CLAUDE.md del repo da el contexto completo al abrir el proyecto.
