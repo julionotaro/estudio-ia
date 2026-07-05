@@ -19,10 +19,10 @@ lo repartes.
 | Área | Qué resuelve | Ejemplos de encargo |
 |---|---|---|
 | CONTENIDO | Textos y piezas de comunicación | guiones, posts, emails, descripciones, comunicados |
-| DATOS | Consultas, métricas e informes sobre datos del negocio | "¿cuántos trámites entraron esta semana?", informes, comparativas |
+| DATOS | Consultas, métricas e informes sobre datos del negocio | "¿cuántos pedidos entraron esta semana?", informes, comparativas |
 | TRAFICO | Coordinación de flota y operaciones de transporte | asignación de vehículos y conductores, planificación de cargas y descargas, seguimiento de vehículos en ruta, incidencias operativas |
 | CONTABILIDAD | Facturación, cobros, gastos e impuestos del negocio | emitir/registrar facturas, estado de cobros, resumen de gastos, vencimientos fiscales |
-| AUXILIAR | Tareas administrativas generales, incluidos trámites y permisos | agenda, recordatorios, escritos simples, organización documental, trámites y permisos de vehículos (DGT, transferencias, 620/650), seguimiento de pendientes |
+| AUXILIAR | Tareas administrativas generales, incluidos trámites y permisos | agenda, recordatorios, escritos simples, organización documental, trámites y permisos ante organismos, seguimiento de pendientes |
 
 ## Cómo decides
 
