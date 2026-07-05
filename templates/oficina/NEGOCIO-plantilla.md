@@ -21,12 +21,12 @@
 
 - **Tono:** (ej.: cercano pero profesional, tuteo, sin tecnicismos)
 - **Idioma(s):**
-- **Prohibido decir / prometer:** (ej.: plazos de la DGT, resultados garantizados)
+- **Prohibido decir / prometer:** (ej.: plazos de organismos públicos, resultados garantizados)
 - **Firma / cierre estándar de comunicaciones:**
 
 ## 4. Datos y sistemas
 
-- **Dónde viven los datos:** (ej.: PostgreSQL tyrion, planillas Tempus, carpeta Drive X)
+- **Dónde viven los datos:** (ej.: base de datos del cliente, planillas, carpeta compartida)
 - **Qué puede consultar cada área:** (mapa área → fuente)
 - **Dato sensible / nunca exponer:** (ej.: DNI completos, importes de clientes a terceros)
 
@@ -63,7 +63,7 @@
 
 ### AUXILIAR
 - Tareas recurrentes: (agenda, recordatorios, escritos tipo)
-- Trámites y permisos: (DGT, transferencias, 620/650, Tempus — documentación mínima por trámite)
+- Trámites y permisos: (organismos con los que opera — documentación mínima por trámite)
 - Regla: nunca confirmar un trámite como presentado sin verificación en sistema.
 - Plantillas disponibles:
 - Calendario / agenda de referencia:
