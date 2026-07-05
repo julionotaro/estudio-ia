@@ -18,13 +18,20 @@ Laboratorio, julio 2026.
 
 CONTENIDO · DATOS · TRAFICO (coordinación de flota, cargas/descargas,
 seguimiento de vehículos) · CONTABILIDAD · AUXILIAR (administración,
-incluidos trámites y permisos DGT).
+incluidos trámites y permisos).
+
+## Regla de la plantilla
+
+Acá solo vive estructura genérica. El dominio de cada cliente (sistemas,
+organismos, terminología) va en el NEGOCIO.md de ese cliente, nunca en
+estas plantillas.
 
 ## Arquitectura de referencia
 
 Coordinador (Dify) → áreas (agentes Dify con rol persistente) → entrega y
-aprobación vía n8n + Telegram (patrón Tyrion). Sin Hermes/Aion: todo sobre
-el stack del estudio.
+aprobación vía n8n + Telegram (patrón validado en el estudio). El coordinador
+es la puerta de la oficina; el Studio Intake Router sigue siendo la puerta de
+la fábrica. Coexisten: son necesidades distintas.
 
 ## Criterio de promoción
 
