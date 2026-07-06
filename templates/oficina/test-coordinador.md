@@ -66,4 +66,13 @@
 
 | Fecha | Modelo | Aciertos | JSON OK | Notas |
 |---|---|---|---|---|
-| — | — | —/18 | —/18 | pendiente |
+| 2026-07-06 | ChatGPT | 17/18 + 1 defendible | 18/18 | PASA. Prompt robusto entre modelos (validado con ChatGPT, no Claude). |
+
+### Notas de la corrida
+- Caso #16 (comprar vs alquilar): el coordinador descompuso en TRAFICO + CONTABILIDAD
+  dejando la decisión final a aprobación humana. **Decisión de diseño: comportamiento
+  esperado**, no fallo. El coordinador se adelanta produciendo insumos de análisis sin
+  tomar la decisión estratégica. Se mantiene así.
+- Caso #5: prioridad "alta" por vencimiento del viernes — correcto según regla.
+- Multi-área (#11, #12): dividió en sub-encargos correctamente.
+- Ambiguos (#13, #14): preguntó sin delegar, como se esperaba.
