@@ -28,4 +28,5 @@
 
 | Fecha | Modelo | Correctos | Alucinaciones | Notas |
 |---|---|---|---|---|
-| — | — | —/6 | — | pendiente |
+| 2026-07-06 | ChatGPT | 6/6 | 0 | PASA. T2 "sin dato" OK, T4 sin matrícula OK, derivaciones OK. |
+| 2026-07-06 | ChatGPT | retest T1/T4 | 0 | Regla 5 (brevedad) aplicada: T1 pasó de 8+8 a 3+3 pendientes, T4 sin requisitos improbables. Sin regresión. |
