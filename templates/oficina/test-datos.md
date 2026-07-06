@@ -20,4 +20,4 @@
 
 | Fecha | Modelo | Correctos | Cifras inventadas | Notas |
 |---|---|---|---|---|
-| — | — | —/6 | — | pendiente |
+| 2026-07-06 | ChatGPT | 6/6 | 0 | PASA. D3 detectó duplicado Porto/Oporto. D4 margen condicionado a gastos completos. Separación dato/lectura en todos. |
