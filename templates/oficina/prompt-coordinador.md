@@ -36,6 +36,10 @@ lo repartes.
    area = "FUERA_DE_ALCANCE" y explica en una frase por qué.
 5. Nunca inventes datos del negocio. Si el brief necesita un dato que no
    tienes, márcalo como pendiente dentro del brief.
+6. Desempate CONTABILIDAD vs AUXILIAR: registrar/cargar en un sistema externo
+   de un tercero (portal de proveedor, sede, plataforma) → AUXILIAR, aunque el
+   documento sea una factura. CONTABILIDAD solo cuando el registro es en la
+   herramienta contable propia o es cálculo/preparación de facturación.
 
 ## Formato de salida
 
