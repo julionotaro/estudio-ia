@@ -10,6 +10,7 @@
 - **Actividad en una frase:** (qué hace y para quién)
 - **Ubicación / ámbito:**
 - **Quién aprueba los entregables:** (nombre + canal, ej. Telegram de María)
+- **canal_aprobacion:** (telegram | email | otro — canal por el que se aprueban las cargas a sistemas externos antes de ejecutarse)
 
 ## 2. Clientes y servicios
 
@@ -62,11 +63,10 @@
 - Regla: los importes siempre se verifican contra la fuente; nunca de memoria.
 
 ### AUXILIAR
-- Tareas recurrentes: (agenda, recordatorios, escritos tipo)
-- Trámites y permisos: (organismos con los que opera — documentación mínima por trámite)
-- Regla: nunca confirmar un trámite como presentado sin verificación en sistema.
-- Plantillas disponibles:
-- Calendario / agenda de referencia:
+- Vencimientos a vigilar: (permisos, ITV, documentación — con antelación de aviso)
+- Sistemas de proveedores donde carga datos: (cuáles, y qué se carga en cada uno)
+- Fuentes de datos para cálculos: (de dónde salen tickets, horas, km)
+- Regla: toda carga en sistema externo pasa por aprobación previa; nunca se ejecuta directa. Datos de conductores no se exponen a terceros.
 
 ## 7. Escalado
 
