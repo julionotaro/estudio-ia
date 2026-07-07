@@ -1,24 +1,29 @@
 # Oficina de agentes — plantillas (EN INVESTIGACIÓN)
 
-**Estado: sin validar con cliente. No es un activo.**
+**Estado: patrón validado técnicamente, sin cliente. No es un activo.**
 
 Origen: investigación `[OFICINA] Oficina de agentes como producto vendible`,
 Laboratorio, julio 2026.
 
 ## Qué hay acá
 
-- `prompt-coordinador.md` — system prompt del agente coordinador (Dify).
-  Recibe encargos en lenguaje natural, clasifica por área y devuelve JSON
-  para que n8n enrute.
-- `NEGOCIO-plantilla.md` — plantilla de contexto por cliente. Es la unidad
-  de replicación de la oficina: un archivo por cliente, inyectado en el
-  system prompt del coordinador y de cada agente de área.
+5 prompts de agente + sus test sets + plantilla de replicación por cliente:
 
-## Áreas definidas (v0)
+- `prompt-coordinador.md` — clasifica el encargo y devuelve JSON con área + brief.
+- `prompt-trafico.md` — coordinación de flota (planifica y propone).
+- `prompt-auxiliar.md` — administración + RPA con aprobación previa.
+- `prompt-contabilidad.md` — cálculo y preparación; registro con aprobación.
+- `prompt-datos.md` — informes y foto de situación sobre datos aportados.
+- `NEGOCIO-plantilla.md` — unidad de replicación: un archivo por cliente,
+  inyectado como variables (nombre_negocio, contenido_negocio) en cada agente.
+- `test-*.md` — baterías de prueba, todas PASA (validadas con ChatGPT).
 
-CONTENIDO · DATOS · TRAFICO (coordinación de flota, cargas/descargas,
-seguimiento de vehículos) · CONTABILIDAD · AUXILIAR (administración,
-incluidos trámites y permisos).
+## Áreas (v0)
+
+COORDINADOR · TRAFICO (flota, cargas/descargas, seguimiento) · AUXILIAR
+(administración + trámites) · CONTABILIDAD (facturación, cobros, gastos) ·
+DATOS (métricas e informes). CONTENIDO está contemplado por el coordinador
+pero aún sin chatflow montado.
 
 ## Regla de la plantilla
 
@@ -26,14 +31,31 @@ Acá solo vive estructura genérica. El dominio de cada cliente (sistemas,
 organismos, terminología) va en el NEGOCIO.md de ese cliente, nunca en
 estas plantillas.
 
+## Estado técnico (jul 2026)
+
+5 agentes validados en Dify (test sets en la carpeta, todos PASA).
+Router n8n construido y validado de punta a punta:
+  webhook → coordinador → área → aprobación humana (webhook plano) → ejecución.
+  Workflow: "Oficina Router v0" (6LjeVR7Nl2RheUY9). Ambas ramas de aprobación
+  (aprobar → Ejecutar Acción, rechazar → Descartar Acción) probadas OK con
+  NEGOCIO.md ficticio (Transportes Miño).
+
+## Pendiente de industrialización (no bloquea el patrón)
+
+- Salida HTTP: limpiar respuesta cruda de Dify (extraer solo `answer`).
+- Multi-área: el router v0 procesa el primer encargo; el coordinador ya divide.
+- Credenciales: app-keys hardcoded → mover a credencial n8n.
+- Canal de aprobación: hoy URL manual; convertir en botón (Telegram/email).
+  Al construir la URL de aprobación, concatenar `&decision=...` a resume_url (no `?`).
+- Agente CONTENIDO: contemplado por el coordinador, sin chatflow montado.
+
 ## Arquitectura de referencia
 
 Coordinador (Dify) → áreas (agentes Dify con rol persistente) → entrega y
-aprobación vía n8n + Telegram (patrón validado en el estudio). El coordinador
-es la puerta de la oficina; el Studio Intake Router sigue siendo la puerta de
-la fábrica. Coexisten: son necesidades distintas.
+aprobación vía n8n. El coordinador es la puerta de la oficina; el Studio Intake
+Router sigue siendo la puerta de la fábrica. Coexisten: necesidades distintas.
 
-## Criterio de promoción
+## Promoción a activos
 
-Cuando se valide con el primer cliente, mover a `activos/oficina-minima/`
-y actualizar la nota de origen con el cliente que lo validó.
+Pendiente de validación con un cliente real. Cuando ocurra, mover a
+`activos/oficina-minima/` y anotar el cliente que lo validó.
