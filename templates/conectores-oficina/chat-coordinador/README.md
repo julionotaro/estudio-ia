@@ -1,7 +1,7 @@
 # Conector — Chat Coordinador
 
-> Tier 1 — transversal (Telegram). Estado: ESQUELETADO — NO activar todavía
-> (ver sección Bots). Datos de negocio en placeholder.
+> Tier 1 — transversal (Telegram). Estado: ACTIVO — validado con bot propio
+> (jul 2026). Datos de negocio en placeholder.
 
 ## Qué hace
 
@@ -22,33 +22,51 @@ Mensaje Telegram (update: message)
 
 | Workflow | ID | Activado |
 |---|---|---|
-| `[CONECTOR] Chat Coordinador` | `gcKsrboh2i3t8QwO` | NO (ver Bots) |
+| `[CONECTOR] Chat Coordinador` | `gcKsrboh2i3t8QwO` | SÍ |
+
+## Bots de Telegram
+
+Un mismo bot de Telegram registra UN webhook en n8n; por eso este conector
+usa un bot SEPARADO del de aprobación.
+
+| Bot | Token (id) | Rol | Credencial n8n |
+|---|---|---|---|
+| `OficinaAprobacionBot_bot` | `8892476860` | Aprobación (callback_query) | `Telegram account` (`RgoHER0Ej0SkXMM2`) |
+| `OficinaAprobacionBot1_bot` | `8978260348` | Chat entrada (message) | `Cuenta de Telegram 2` (`qVW0eUQw8xXkN138`) |
+
+**Pendiente:** renombrar el bot de chat en @BotFather (el nombre
+"AprobacionBot1" siendo el de chat es confuso). El renombre no afecta
+token ni webhook.
+
+Con cliente real: crear bot propio + credencial `CRED_CHAT_<CLIENTE>`
+y reapuntar `Mensaje Telegram` y `Responder Telegram`.
+
+## APRENDIZAJE — Asignación de credenciales vía MCP (n8n)
+
+`setNodeParameter` con path `/credentials` NO asigna credenciales: las anida
+dentro de `parameters` y n8n las ignora. **Fallo silencioso**: el publish pasa
+OK pero el Telegram Trigger no puede llamar a la API de Telegram y no registra
+su webhook (`getWebhookInfo` queda con `url:""`; los POST entrantes dan 403
+"webhook not registered").
+
+Asignación correcta vía MCP:
+1. Si `parameters` quedó contaminado con `credentials`, limpiarlo con
+   `updateNodeParameters` (`replace: true`) dejando solo los parámetros reales.
+2. Operación `setNodeCredential` con `credentialKey: telegramApi` (clave
+   estándar del nodo), `credentialId` y `credentialName`.
+3. Despublicar + publicar. n8n registra el webhook solo (verificable con
+   `getWebhookInfo`: debe aparecer la URL `https://.../webhook/<webhookId>/webhook`).
+
+Diagnóstico útil: si el trigger de Telegram no responde, consultar
+`getWebhookInfo` del token. `url:""` = n8n nunca registró (credencial mal
+asignada o token inválido). `url` correcta + 403 = registro manual sin entrada
+interna en n8n (no registrar a mano; dejar que n8n lo haga al publicar).
 
 ## Datos de negocio (placeholder)
 
 El nodo `Armar Encargo` rellena `nombre_negocio` y `contenido_negocio` con
 valores placeholder. Con cliente real: leerlos de NEGOCIO.md o fijarlos en
 ese nodo. El `encargo` sí sale del mensaje real.
-
-## Bots de Telegram — IMPORTANTE
-
-Un mismo bot de Telegram registra UN webhook en n8n. El conector de
-**aprobación** ya usa el bot actual (credencial `Telegram account`,
-`RgoHER0Ej0SkXMM2`) escuchando `callback_query`. Este conector escucha
-`message`. Dos Telegram Triggers del mismo bot compiten por el webhook:
-el último activado gana y desactiva al otro.
-
-**Solución:** usar un BOT SEPARADO para la entrada de mensajes.
-Pasos con cliente real:
-1. Crear bot nuevo con @BotFather (p. ej. `OficinaEntradaBot`).
-2. Crear credencial Telegram API en n8n con ese token
-   (convención: `CRED_CHAT_<CLIENTE>`).
-3. Reapuntar los nodos `Mensaje Telegram` y `Responder Telegram` a esa
-   credencial.
-4. Recién entonces activar el workflow.
-
-Hoy el conector usa la credencial del bot de aprobación como placeholder
-y queda INACTIVO para no romper el flujo de aprobación ya validado.
 
 ## Contrato hacia el Router
 
@@ -63,7 +81,9 @@ nginx para `/webhook/`).
 
 ## Pendiente antes de promover a activos/
 
-- [ ] Crear bot de entrada separado y validar recepción real.
+- [x] Crear bot de entrada separado y validar recepción real. (jul 2026:
+      mensaje → router → respuesta "Encargo recibido" OK)
+- [ ] Renombrar bot de chat en @BotFather.
 - [ ] Parametrizar nombre_negocio/contenido_negocio desde NEGOCIO.md.
 - [ ] Migrar URL del router a HTTPS.
 - [ ] Manejar mensajes que no son texto (fotos, documentos) — hoy asume texto.
