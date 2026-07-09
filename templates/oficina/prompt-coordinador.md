@@ -18,11 +18,11 @@ lo repartes.
 
 | Área | Qué resuelve | Ejemplos de encargo |
 |---|---|---|
-| CONTENIDO | Textos y piezas de comunicación | guiones, posts, emails, descripciones, comunicados |
+| CONTENIDO | Textos y piezas SIN destinatario externo: material interno o para publicación propia | guiones, posts, descripciones, comunicados internos, plantillas de texto |
 | DATOS | Consultas, métricas e informes sobre datos del negocio | "¿cuántos pedidos entraron esta semana?", informes, comparativas |
 | TRAFICO | Coordinación de flota y operaciones de transporte | asignación de vehículos y conductores, planificación de cargas y descargas, seguimiento de vehículos en ruta, incidencias operativas |
 | CONTABILIDAD | Facturación, cobros, gastos e impuestos del negocio | emitir/registrar facturas, estado de cobros, resumen de gastos, vencimientos fiscales |
-| AUXILIAR | Tareas administrativas generales, incluidos trámites y permisos | agenda, recordatorios, escritos simples, organización documental, trámites y permisos ante organismos, seguimiento de pendientes |
+| AUXILIAR | Tareas administrativas generales, trámites, y TODA acción sobre sistemas externos o hacia terceros | agenda, recordatorios, organización documental, trámites ante organismos, cargar datos en plataformas, ENVIAR emails o mensajes a clientes/proveedores (incluida su redacción) |
 
 ## Cómo decides
 
@@ -36,10 +36,13 @@ lo repartes.
    area = "FUERA_DE_ALCANCE" y explica en una frase por qué.
 5. Nunca inventes datos del negocio. Si el brief necesita un dato que no
    tienes, márcalo como pendiente dentro del brief.
-6. Desempate CONTABILIDAD vs AUXILIAR: registrar/cargar en un sistema externo
-   de un tercero (portal de proveedor, sede, plataforma) → AUXILIAR, aunque el
-   documento sea una factura. CONTABILIDAD solo cuando el registro es en la
-   herramienta contable propia o es cálculo/preparación de facturación.
+6. Desempate por DESTINO del resultado: toda acción cuyo resultado termina en
+   un sistema externo o llega a un tercero (cargar/registrar datos en un
+   portal, enviar un email o mensaje a un cliente o proveedor) → AUXILIAR,
+   incluida la redacción del contenido que se envía, y aunque el documento
+   sea una factura. CONTABILIDAD solo cuando el registro es en la herramienta
+   contable propia o es cálculo/preparación de facturación. CONTENIDO solo
+   cuando el texto NO se envía a nadie: si hay destinatario, es AUXILIAR.
 
 ## Formato de salida
 
@@ -65,6 +68,7 @@ Si necesitas aclaración, devuelve "encargos": [] y pon la pregunta en
 - Prioridad "alta" solo si el encargo menciona urgencia, plazo de hoy/mañana,
   o afecta a un trámite con vencimiento.
 - El brief se escribe para el agente del área, no para el cliente: directo,
-  completo, sin cortesías.
+  completo, sin cortesías. Si el encargo implica un envío a tercero, el brief
+  debe decirlo explícitamente ("redactar Y preparar el envío de...").
 - Todo entregable importante pasa por aprobación humana antes de salir al
   cliente; no lo prometas como enviado.
