@@ -1,8 +1,10 @@
 # Dispatcher del Oficina Router v0
 
 > Añadido jul 2026. Reemplaza el placeholder "Ejecutar Accion" del router
-> (`6LjeVR7Nl2RheUY9`). VALIDADO punta a punta (ejecución 295, con Dify
-> pineado y aprobación Telegram real). Los 6 conectores integrados.
+> (`6LjeVR7Nl2RheUY9`). Los 6 conectores integrados.
+> **PRUEBA NATURAL COMPLETA OK (10 jul 2026):** encargo por Telegram →
+> Coordinador → AUXILIAR (Dify, prompts corregidos) → aprobación humana →
+> dispatch → Conector Mail (ERROR_CONECTOR esperado por SMTP placeholder).
 
 ## Qué hace
 
@@ -43,6 +45,9 @@ bloque JSON con:
 } }
 ```
 
+VALIDADO 10 jul: el agente AUXILIAR real (Dify) emite exactamente este shape
+con los prompts corregidos.
+
 `Parsear Instruccion` es tolerante: si no hay JSON o falta `herramienta`,
 cae a `SIN_CONECTOR` sin romper la ejecución. La `suite` se fija hoy como
 placeholder `google` en ese nodo (con cliente: leer de NEGOCIO.md).
@@ -69,14 +74,17 @@ placeholder `google` en ese nodo (con cliente: leer de NEGOCIO.md).
 | Sin conector para la herramienta | `{ estado: SIN_CONECTOR, herramienta, mensaje }` |
 | Rechazado | `{ estado: RECHAZADO }` |
 
-## Validación (ejecución 295, jul 2026)
+## Validaciones
 
-Método: `test_workflow` con pin data en los 3 nodos Dify/webhook y TODO lo
-demás real: aprobación por Telegram real, resume del Wait, dispatch,
-sub-workflow Mail. Falló exactamente en la credencial `PLACEHOLDER_SMTP` —
-el punto de fallo esperado por diseño. Dispatch y mapeo probados. Los otros
-5 conectores usan el mismo mecanismo (Execute Sub-workflow + mapeo plano);
-sus credenciales siguen en placeholder.
+- **Exec 295 (9 jul):** `test_workflow` con Dify pineado, aprobación Telegram
+  real, dispatch a Mail. Falló exactamente en `PLACEHOLDER_SMTP` (esperado).
+- **Prueba natural (10 jul):** encargo real por el bot de chat, prompts
+  corregidos ya en Dify. Ciclo completo OK: Coordinador→AUXILIAR→
+  PENDIENTE_APROBACION+instruccion_accion→botón→aprobar→dispatch→
+  ERROR_CONECTOR (SMTP placeholder) de vuelta al chat. Único eslabón
+  pendiente para envío real: credencial SMTP.
+- La URL del router en el chat-coordinador quedó migrada a
+  `https://studio-julio.duckdns.org/webhook/oficina-encargo` (10 jul).
 
 ## Decisiones de diseño de la sesión
 
@@ -86,41 +94,39 @@ sus credenciales siguen en placeholder.
   destinatario externo. **CONTENIDO se mantiene en el catálogo de áreas**
   (decisión de Julio: no retirarlo; construir su agente bien en el futuro).
 - Herramienta desconocida NO rompe: SIN_CONECTOR informativo.
-- Prompts corregidos en repo (`prompt-coordinador.md`, `prompt-auxiliar.md`):
-  Regla 6 por destino del resultado; AUXILIAR dueño de comunicaciones
-  salientes; `instruccion_accion` alineada a este contrato. PENDIENTE pegar
-  en Dify.
+- Prompts corregidos en repo Y pegados en Dify (10 jul), validados en
+  producción.
 
 ## Pendientes
 
-- [ ] Pegar prompts corregidos en Dify (Coordinador + AUXILIAR).
-- [ ] Prueba natural completa: encargo por chat → AUXILIAR real → aprobación
-      → dispatch (validar shape real del `instruccion_accion` de Dify).
-- [ ] Credencial SMTP real en `Enviar SMTP` del conector Mail.
+- [ ] Credencial SMTP real en `Enviar SMTP` del conector Mail → envío real.
 - [ ] Credenciales reales del resto de conectores al ensamblar cliente.
 - [ ] Respuesta al chat tras aprobación: revisar cómo se muestra `resultado`
       (objeto) en Telegram.
+- [ ] Gotenberg (rama PDF de gen-documentos) y chatflow Dify de extracción.
 
 ## Aprendizajes técnicos
 
+- **Telegram "can't parse entities" (400):** si el mensaje incluye contenido
+  arbitrario del agente (JSON con guiones bajos), el parse de entidades puede
+  romper según el contenido. Fix en `Enviar Solicitud Telegram` (Solicitar
+  Aprobacion): `parse_mode: HTML` explícito + escapar `& < >` del resumen.
+  Nunca interpolar texto libre en mensajes Telegram con parseo sin escapar.
 - **Validador de publish y parámetros \_\_rl requeridos:** un valor estático
   placeholder en un parámetro resourceLocator requerido (ej. `table` de Excel
-  lookup) bloquea el publish ("Missing or invalid required parameters"). Un
-  placeholder dentro de una EXPRESIÓN sí pasa:
+  lookup) bloquea el publish. Un placeholder dentro de una EXPRESIÓN sí pasa:
   `={{ $("Entrada").item.json.tabla_id || "PLACEHOLDER_TABLA" }}`.
 - **Sub-workflows deben estar publicados** antes de publicar el workflow padre
-  que los referencia (publish falla con error explícito si no).
+  que los referencia.
 - **Switch: añadir reglas desplaza el fallback.** Al pasar de 1 a 6 reglas, el
-  fallback pasa del output 1 al 6; hay que quitar y recrear la conexión del
-  fallback o queda apuntando a la salida de una regla nueva.
+  fallback pasa del output 1 al 6; quitar y recrear su conexión.
 
 ## Incidente registrado (aprendizaje operativo)
 
-Durante la sesión, el webhook de Telegram del bot de aprobación quedó borrado
-como secuela de ciclos publish/unpublish ejecutados mientras una credencial
-tenía el token equivocado (el token del bot 1 estaba pegado en la credencial
-del bot 2). Síntoma: botón de aprobar sin efecto; Resolver sin ejecuciones.
-**Regla operativa:** tras cualquier cambio de credenciales Telegram o ciclo de
-publicación, verificar `getWebhookInfo` de TODOS los bots afectados (url y
-`allowed_updates` correctos). Un webhook vacío = n8n no registró; url ajena =
-credencial con token equivocado.
+El webhook de Telegram del bot de aprobación quedó borrado como secuela de
+ciclos publish/unpublish ejecutados mientras una credencial tenía el token
+equivocado (el token del bot 1 pegado en la credencial del bot 2). Síntoma:
+botón de aprobar sin efecto; Resolver sin ejecuciones. **Regla operativa:**
+tras cualquier cambio de credenciales Telegram o ciclo de publicación,
+verificar `getWebhookInfo` de TODOS los bots afectados. Un webhook vacío =
+n8n no registró; url ajena = credencial con token equivocado.
