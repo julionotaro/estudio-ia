@@ -1,0 +1,72 @@
+{
+  "name": "[ACTIVO] Lector Buzon",
+  "nodes": [
+    {
+      "id": "20c6ccdb-18b5-4086-ae25-b34865429b09",
+      "name": "Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lector-buzon",
+        "responseMode": "lastNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "df5cfc9d-074a-415d-9e03-2eaf1343304d",
+      "name": "Filtros",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [224, 0],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const b = ($input.first().json.body) || {};\nconst partes = [];\nif (b.filtro_remitente) partes.push('from:' + b.filtro_remitente);\nif (b.filtro_asunto) partes.push('subject:' + b.filtro_asunto);\nif (b.con_adjuntos === true) partes.push('has:attachment');\nif (b.recibido_despues) partes.push('after:' + b.recibido_despues);\nreturn [{ json: {\n  q: partes.join(' '),\n  limite: Number(b.limite) > 0 ? Number(b.limite) : 10,\n  solo_no_leidos: b.solo_no_leidos === true,\n  descargar_adjuntos: b.descargar_adjuntos !== false\n} }];"
+      }
+    },
+    {
+      "id": "df430c1a-db5e-426b-89af-8104d096f458",
+      "name": "Leer Buzon",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [448, 0],
+      "alwaysOutputData": true,
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "returnAll": false,
+        "limit": "={{ $json.limite }}",
+        "simple": false,
+        "filters": {
+          "q": "={{ $json.q }}",
+          "readStatus": "={{ $json.solo_no_leidos ? 'unread' : 'both' }}"
+        },
+        "options": {
+          "downloadAttachments": "={{ $('Filtros').first().json.descargar_adjuntos }}",
+          "dataPropertyAttachmentsPrefixName": "adjunto_"
+        }
+      },
+      "credentials": {
+        "gmailOAuth2": { "id": "REEMPLAZAR", "name": "Gmail OAuth2 del cliente" }
+      }
+    },
+    {
+      "id": "e11299e3-ace7-4706-89bb-90ab56c0576e",
+      "name": "Metadatos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [672, 0],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const mensajes = [];\nfor (const item of $input.all()) {\n  const j = item.json || {};\n  if (!j.id) continue;\n  const bin = item.binary || {};\n  const adjuntos = Object.keys(bin).map(k => ({\n    campo_binario: k,\n    nombre: bin[k].fileName || k,\n    mime: bin[k].mimeType || '',\n    tamano: bin[k].fileSize || null\n  }));\n  mensajes.push({\n    id: j.id,\n    hilo: j.threadId || '',\n    de: (j.from && j.from.text) || '',\n    para: (j.to && j.to.text) || '',\n    asunto: j.subject || '',\n    fecha: j.date || '',\n    adjuntos: adjuntos\n  });\n}\nreturn [{ json: { ok: true, cantidad: mensajes.length, mensajes: mensajes } }];"
+      }
+    }
+  ],
+  "connections": {
+    "Entrada": { "main": [[{ "node": "Filtros", "type": "main", "index": 0 }]] },
+    "Filtros": { "main": [[{ "node": "Leer Buzon", "type": "main", "index": 0 }]] },
+    "Leer Buzon": { "main": [[{ "node": "Metadatos", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
