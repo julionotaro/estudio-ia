@@ -73,6 +73,82 @@ A 300 DPI una A4 sale ~2480×3508 px.
 curl -F "file=@fichas.pdf" "localhost:8000/rasterizar?dpi=300"
 ```
 
+### `POST /rasterizar-regiones`
+
+Recorta **regiones** (bounding boxes relativos, 0–1) de las páginas del PDF y las
+devuelve en alta resolución. Dos usos:
+
+1. **Leer el campo sobre su banda ampliada**, no sobre la A4 entera. La ficha es
+   un formulario de layout fijo → las bandas (columna de km, matrícula, kg…) son
+   estables y se definen una vez. Ver el número grande y aislado de su vecindario
+   de ruido (OBSERVACIONES, GASTOS) mejora la lectura.
+2. **Relectura focalizada**: cuando la primera lectura de un campo no cierra,
+   pedir un recorte más ceñido **a mayor DPI** y volver a leer solo esa zona.
+
+**Entrada**
+
+| Dónde | Campo | Tipo | Defecto | Qué es |
+|---|---|---|---|---|
+| multipart | `file` | archivo | — | el PDF |
+| form | `regiones` | JSON string | — | lista de regiones (ver abajo) |
+| query | `dpi` | int | `300` | resolución de rasterizado (72–600); subir para relectura |
+| query | `incluir_pagina_completa` | bool | `false` | si `true`, agrega también el PNG de la página entera (página + bandas en una sola llamada) |
+
+Cada **región**: `{ "nombre": str, "x0": float, "y0": float, "x1": float, "y1": float, "pagina"?: int }`.
+Coordenadas relativas 0–1 (`x0<x1`, `y0<y1`). `pagina` es 1-based y opcional: si
+falta, la región se aplica a **todas** las páginas. Si todas las regiones fijan
+`pagina` y no se pide la página completa, **solo se rasterizan esas páginas**
+(clave para la latencia de la relectura).
+
+**Salida (`200`)**
+
+```json
+{
+  "dpi": 400,
+  "num_paginas": 3,
+  "paginas": [
+    {
+      "pagina": 1, "ancho": 3307, "alto": 4677,
+      "regiones": [
+        {
+          "nombre": "km_v1",
+          "x0": 0.04, "y0": 0.30, "x1": 0.99, "y1": 0.345,
+          "ancho": 3141, "alto": 211,
+          "tinta_ratio": 0.19923,
+          "parece_vacio": false,
+          "png_base64": "iVBORw0KG..."
+        }
+      ]
+    }
+  ]
+}
+```
+
+**`parece_vacio` / `tinta_ratio`** son la **guarda del propio recorte**: si un
+escaneo viene desplazado o rotado, el crop puede caer sobre margen en blanco.
+`tinta_ratio` es la fracción de píxeles oscuros; `parece_vacio` es `true` cuando
+cae por debajo del umbral. El servicio **no decide** el fallback (es agnóstico de
+dominio): expone la señal para que el llamador reemplace ese campo por la página
+completa y lo marque (`crop_fallback_pagina`). La **detección de rotación** queda
+fuera de alcance: la guarda cubre el caso de recorte vacío, no el de recorte
+inclinado con tinta.
+
+**Errores**
+
+| Código | Cuándo |
+|---|---|
+| `400` | archivo vacío / no PDF / PDF corrupto / >20 páginas / `regiones` no es JSON o lista vacía / `pagina` fuera de rango |
+| `422` | `dpi` fuera de 72–600, o región con coordenadas inválidas (fuera de 0–1, `x0≥x1`, `y0≥y1`) |
+| `500` | fallo interno |
+
+**Ejemplo**
+
+```bash
+curl -F "file=@fichas.pdf" \
+     -F 'regiones=[{"nombre":"km_v1","x0":0.04,"y0":0.30,"x1":0.99,"y1":0.345,"pagina":1}]' \
+     "localhost:8000/rasterizar-regiones?dpi=400"
+```
+
 ## Tests
 
 ```bash
@@ -89,8 +165,19 @@ sudo apt-get install -y poppler-utils      # Debian/Ubuntu
 brew install poppler                        # macOS
 ```
 
-## Pendiente — v1.1
+## Regiones de la ficha Transliquidos (referencia)
 
-**Recorte por región/fila** (`POST /rasterizar-regiones`): el fallback de lectura
-para cuando la página entera no alcanza. Fuera de alcance de v1; se añadirá
-gobernado por la barra de corte del barrido de modelos.
+Las bandas relativas que cubren los campos que facturan en la ficha de viaje
+(formulario de layout fijo, verificadas contra el raster real a 300/400 DPI):
+
+| Banda | `x0` | `y0` | `x1` | `y1` | Cubre |
+|---|---|---|---|---|---|
+| `band_matricula` | 0.03 | 0.150 | 0.99 | 0.212 | CONDUCTOR / TRACTORA / REMOLQUE |
+| `km_v1` | 0.04 | 0.300 | 0.99 | 0.345 | KM inicio · final · recorridos (viaje 1) |
+| `km_v2` | 0.04 | 0.435 | 0.99 | 0.478 | ídem viaje 2 |
+| `km_v3` | 0.04 | 0.572 | 0.99 | 0.616 | ídem viaje 3 |
+
+Estas coordenadas son propias del cliente Transliquidos y viven de su lado
+(el rasterizador es agnóstico de dominio); se documentan aquí solo como origen
+de la feature. El consumidor (canal ficha en n8n) las envía en el campo
+`regiones`.
