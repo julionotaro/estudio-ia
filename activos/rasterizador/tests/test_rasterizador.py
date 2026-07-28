@@ -7,6 +7,7 @@ que instala el Dockerfile).
 
 import base64
 import io
+import json
 import os
 import sys
 
@@ -121,3 +122,162 @@ def test_health():
 
     assert r.status_code == 200
     assert r.json() == {"status": "ok"}
+
+
+# --------------------------------------------------------------------------
+# /rasterizar-regiones — recorte por región (Palanca B)
+# --------------------------------------------------------------------------
+
+A4_PT_ANCHO = 595.27
+A4_PT_ALTO = 841.89
+
+
+def pdf_con_marca() -> bytes:
+    """PDF A4 con un rectángulo negro en el cuadrante superior izquierdo.
+
+    En coordenadas relativas (0–1, y desde arriba) la marca ocupa ~[0..0.5]×[0..0.2].
+    El resto de la página queda en blanco: sirve para distinguir un recorte con
+    tinta de uno vacío.
+    """
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=A4)
+    # reportlab: origen abajo-izquierda. Top 20% => y en [0.8*alto, alto].
+    c.rect(0, A4_PT_ALTO * 0.8, A4_PT_ANCHO * 0.5, A4_PT_ALTO * 0.2, fill=1)
+    c.showPage()
+    c.save()
+    return buf.getvalue()
+
+
+def post_regiones(data: bytes, regiones, **params):
+    return client.post(
+        "/rasterizar-regiones",
+        files={"file": ("prueba.pdf", data, "application/pdf")},
+        data={"regiones": json.dumps(regiones)},
+        params=params,
+    )
+
+
+def test_regiones_recorta_a_las_dimensiones_pedidas():
+    r = post_regiones(
+        pdf_a4(1),
+        [{"nombre": "mitad_sup", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.5}],
+    )
+
+    assert r.status_code == 200
+    cuerpo = r.json()
+    assert cuerpo["num_paginas"] == 1
+    pagina = cuerpo["paginas"][0]
+    recorte = pagina["regiones"][0]
+    assert recorte["nombre"] == "mitad_sup"
+    # ancho completo, alto la mitad de la página.
+    assert_aprox(recorte["ancho"], pagina["ancho"])
+    assert_aprox(recorte["alto"], pagina["alto"] // 2)
+    assert base64.b64decode(recorte["png_base64"]).startswith(PNG_MAGIC)
+
+
+def test_region_con_tinta_no_parece_vacio_y_region_en_blanco_si():
+    r = post_regiones(
+        pdf_con_marca(),
+        [
+            {"nombre": "con_marca", "x0": 0.0, "y0": 0.0, "x1": 0.5, "y1": 0.2},
+            {"nombre": "en_blanco", "x0": 0.5, "y0": 0.8, "x1": 1.0, "y1": 1.0},
+        ],
+    )
+
+    assert r.status_code == 200
+    recortes = {x["nombre"]: x for x in r.json()["paginas"][0]["regiones"]}
+    assert recortes["con_marca"]["parece_vacio"] is False
+    assert recortes["con_marca"]["tinta_ratio"] > 0.05
+    # Recorte desalineado/vacío -> señal de fallback a página completa.
+    assert recortes["en_blanco"]["parece_vacio"] is True
+
+
+def test_incluir_pagina_completa_agrega_png_de_pagina():
+    r = post_regiones(
+        pdf_a4(1),
+        [{"nombre": "banda", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3}],
+        incluir_pagina_completa=True,
+    )
+
+    assert r.status_code == 200
+    pagina = r.json()["paginas"][0]
+    assert "png_base64" in pagina
+    assert base64.b64decode(pagina["png_base64"]).startswith(PNG_MAGIC)
+    # Y sigue trayendo la región recortada.
+    assert pagina["regiones"][0]["nombre"] == "banda"
+
+
+def test_pagina_especifica_solo_devuelve_esa_pagina():
+    r = post_regiones(
+        pdf_a4(3),
+        [{"nombre": "banda", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3, "pagina": 2}],
+    )
+
+    assert r.status_code == 200
+    cuerpo = r.json()
+    assert cuerpo["num_paginas"] == 3  # el doc tiene 3
+    assert [p["pagina"] for p in cuerpo["paginas"]] == [2]  # solo rasterizó la 2
+
+
+def test_region_sin_pagina_se_aplica_a_todas():
+    r = post_regiones(
+        pdf_a4(3),
+        [{"nombre": "banda", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3}],
+    )
+
+    assert r.status_code == 200
+    paginas = r.json()["paginas"]
+    assert [p["pagina"] for p in paginas] == [1, 2, 3]
+    for p in paginas:
+        assert [x["nombre"] for x in p["regiones"]] == ["banda"]
+
+
+def test_dpi_mayor_amplia_el_recorte():
+    data = pdf_a4(1)
+    reg = [{"nombre": "b", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3}]
+
+    r300 = post_regiones(data, reg, dpi=300)
+    r600 = post_regiones(data, reg, dpi=600)
+
+    a300 = r300.json()["paginas"][0]["regiones"][0]["ancho"]
+    a600 = r600.json()["paginas"][0]["regiones"][0]["ancho"]
+    assert_aprox(a600, a300 * 2)
+
+
+def test_coordenadas_invalidas_devuelven_422():
+    # x1 < x0
+    r = post_regiones(
+        pdf_a4(1),
+        [{"nombre": "mala", "x0": 0.8, "y0": 0.0, "x1": 0.2, "y1": 0.5}],
+    )
+    assert r.status_code == 422
+
+
+def test_pagina_fuera_de_rango_devuelve_400():
+    r = post_regiones(
+        pdf_a4(1),
+        [{"nombre": "b", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3, "pagina": 9}],
+    )
+    assert r.status_code == 400
+
+
+def test_regiones_json_invalido_devuelve_400():
+    r = client.post(
+        "/rasterizar-regiones",
+        files={"file": ("prueba.pdf", pdf_a4(1), "application/pdf")},
+        data={"regiones": "esto no es json"},
+    )
+    assert r.status_code == 400
+
+
+def test_lista_de_regiones_vacia_devuelve_400():
+    r = post_regiones(pdf_a4(1), [])
+    assert r.status_code == 400
+
+
+def test_regiones_archivo_no_pdf_devuelve_400():
+    r = post_regiones(
+        b"bytes basura",
+        [{"nombre": "b", "x0": 0.0, "y0": 0.0, "x1": 1.0, "y1": 0.3}],
+    )
+    assert r.status_code == 400
